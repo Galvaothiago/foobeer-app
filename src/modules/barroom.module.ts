@@ -8,5 +8,6 @@ import { BarroomService } from 'src/services/barroom.service';
   imports: [TypeOrmModule.forFeature([BarRoom])],
   controllers: [BarroomController],
   providers: [BarroomService],
+  exports: [BarroomService],
 })
 export class BarroomModule {}

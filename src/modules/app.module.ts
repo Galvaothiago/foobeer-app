@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from '../controllers/app.controller';
-import { AppService } from '../services/app.service';
+import { AuthModule } from 'src/auth/auth.module';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
+import { BarRoom } from 'src/entities/barroom/barroom.entity';
+import { OpeningHours } from 'src/entities/openinig-hours/opening-hours.entity';
 import { BarroomModule } from './barroom.module';
+import { OpeningHoursModule } from './opening-hours.module';
 
 @Module({
   imports: [
@@ -17,14 +21,22 @@ import { BarroomModule } from './barroom.module';
         username: configService.get('TYPE_ORM_DB_USERNAME', 'root'),
         password: configService.get('TYPE_ORM_DB_PASSWORD', '091041212'),
         database: configService.get('TYPE_ORM_DB_DATABASE', 'foobeer'),
-        entities: [__dirname + '/**/*.entity{.js, .ts}'],
+        // entities: [__dirname + './**/*.entity{.js, .ts}'],]
+        entities: [BarRoom, OpeningHours],
         synchronize: true,
       }),
     }),
     ConfigModule.forRoot({ isGlobal: true }),
+    AuthModule,
     BarroomModule,
+    OpeningHoursModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

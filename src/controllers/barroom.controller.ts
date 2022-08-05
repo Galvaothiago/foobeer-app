@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CreateBarroomDto } from 'src/entities/barroom/dto/create-barroom.dto';
 import { BarroomService } from 'src/services/barroom.service';
 
@@ -7,7 +7,7 @@ export class BarroomController {
   constructor(private readonly barroomService: BarroomService) {}
 
   @Post('/')
-  async createBarroom(createBarroomDto: CreateBarroomDto) {
-    return this.barroomService.createCompany(createBarroomDto);
+  async createBarroom(@Body() createBarroomDto: CreateBarroomDto) {
+    this.barroomService.createCompany(createBarroomDto);
   }
 }
