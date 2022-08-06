@@ -33,10 +33,18 @@ export class AuthController {
   }
 
   @IsPublic()
-  @Get('/:existsEmail')
-  verfifyUsername(@Param('email') email: string) {
+  @Get('/email/:email')
+  verifyExistsEmail(@Param('email') email: string) {
     if (!!email) {
       return this.barroomService.existBarroomByEmail(email);
+    }
+  }
+
+  @IsPublic()
+  @Get('/cnpj/:cnpj')
+  verifyExistsCNPJ(@Param('cnpj') cnpj: string) {
+    if (!!cnpj) {
+      return this.barroomService.existBarroomByCNPJ(cnpj);
     }
   }
 

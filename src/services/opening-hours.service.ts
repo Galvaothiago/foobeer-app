@@ -5,6 +5,7 @@ import { UpdateOpeningHoursDto } from 'src/entities/openinig-hours/dto/update-op
 import { OpeningHours } from 'src/entities/openinig-hours/opening-hours.entity';
 import { OpeningHoursNotFoundException } from 'src/exceptions/opening-hours/opening-hours-not-found.exception';
 import { OpeningHoursException } from 'src/exceptions/opening-hours/opening-hours.exception';
+import { normalizeDayWeeks } from 'src/utils/normalizeDayWeeks';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -15,7 +16,11 @@ export class OpeningHoursService {
   ) {}
 
   async create(createOpeningHoursDto: CreateOpeningHoursDto) {
-    return await this.openingHoursRepository.save(createOpeningHoursDto);
+    const openingHoursUpdated = {
+      ...createOpeningHoursDto,
+      weekDays: normalizeDayWeeks(createOpeningHoursDto.weekDays),
+    };
+    return await this.openingHoursRepository.save(openingHoursUpdated);
   }
 
   async findAllByBarroomId(barroomId: string) {
