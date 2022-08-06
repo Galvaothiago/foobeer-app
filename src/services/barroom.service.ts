@@ -34,7 +34,7 @@ export class BarroomService {
       const userCreated = await this.barroomRepository.save(data);
 
       return {
-        ...userCreated,
+        userCreated,
         password: undefined,
       };
     } catch (err) {
@@ -51,6 +51,24 @@ export class BarroomService {
       });
 
       return barroom;
+    } catch (err) {
+      throw new BarroomException(err.message);
+    }
+  }
+
+  async existBarroomByCNPJ(cnpj: string) {
+    try {
+      const barroom = await this.barroomRepository.findOne({
+        where: {
+          cnpj,
+        },
+      });
+
+      if (!barroom) {
+        return false;
+      }
+
+      return true;
     } catch (err) {
       throw new BarroomException(err.message);
     }
