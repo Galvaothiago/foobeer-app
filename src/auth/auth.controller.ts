@@ -45,7 +45,6 @@ export class AuthController {
   @HttpCode(200)
   @UseGuards(LocalAuthGuard)
   login(@Request() request: AuthRequest) {
-    console.log(process.env.JWT_TIME_EXPIRATION);
     return this.authService.login(request.user);
   }
 }

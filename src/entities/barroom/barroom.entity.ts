@@ -1,5 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { OpeningHours } from '../openinig-hours/opening-hours.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('bar_room')
 export class BarRoom {
@@ -12,13 +11,13 @@ export class BarRoom {
   @Column()
   address: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
   logoPath: string;
 
-  @Column()
+  @Column({ unique: true })
   cnpj: string;
 
   @Column()
