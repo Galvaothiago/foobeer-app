@@ -11,21 +11,30 @@ const messageRoleManager =
 const messageRoleGod =
   'Você é o criador de tudo isso aqui. Tem direito da porra toda! Apenas continue fazendo o que quiser fazer';
 
-export const yourPowersByYourRole = (youRole: Role) => {
-  switch (youRole) {
+export const yourPowersByYourRole = (role: Role[]) => {
+  let message = '';
+
+  switch (String(role)) {
     case Role.TABLE:
-      return messageRoleTable;
+      message = messageRoleTable;
+      break;
 
     case Role.BARTENDER:
-      return messageRoleBartender;
+      message = messageRoleBartender;
+      break;
 
     case Role.ADMIN:
-      return messageRoleAdmin;
+      message = messageRoleAdmin;
+      break;
 
     case Role.MANAGER:
-      return messageRoleManager;
+      message = messageRoleManager;
+      break;
 
     case Role.GOD:
-      return messageRoleGod;
+      message = messageRoleGod;
+      break;
   }
+
+  return message;
 };

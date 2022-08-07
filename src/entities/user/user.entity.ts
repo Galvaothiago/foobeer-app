@@ -14,7 +14,7 @@ export class User {
 
   yourPowers: string;
 
-  @Column()
+  @Column({ type: 'enum', enum: Role, default: Role.TABLE })
   roles: Role[];
 
   @Column()

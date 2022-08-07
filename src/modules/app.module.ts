@@ -23,8 +23,8 @@ import { UserModule } from './user.module';
         username: configService.get('TYPE_ORM_DB_USERNAME', 'root'),
         password: configService.get('TYPE_ORM_DB_PASSWORD', '091041212'),
         database: configService.get('TYPE_ORM_DB_DATABASE', 'foobeer'),
-        // entities: [__dirname + './**/*.entity{.js, .ts}'],]
-        entities: [BarRoom, OpeningHours],
+        entities: [__dirname + '../../**/*.entity{.js, .ts}'],
+        // entities: [BarRoom, OpeningHours, ],
         synchronize: true,
       }),
     }),

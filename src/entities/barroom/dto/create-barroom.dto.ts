@@ -16,7 +16,4 @@ export class CreateBarroomDto {
 
   @IsNotEmpty()
   logoPath: string;
-
-  @IsNotEmpty()
-  password: string;
 }

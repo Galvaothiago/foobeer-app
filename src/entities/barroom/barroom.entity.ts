@@ -19,7 +19,4 @@ export class BarRoom {
 
   @Column({ unique: true })
   cnpj: string;
-
-  @Column()
-  password: string;
 }
