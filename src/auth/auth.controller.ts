@@ -13,30 +13,32 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guards';
 import { BarroomService } from 'src/services/barroom.service';
 import { CreateBarroomDto } from 'src/entities/barroom/dto/create-barroom.dto';
-import { BarRoom } from 'src/entities/barroom/barroom.entity';
+import { User } from 'src/entities/user/user.entity';
+import { UserService } from 'src/services/user.service';
+import { CreateUserDto } from 'src/entities/user/dto/create-user.dto';
 
 interface AuthRequest extends Request {
-  user: BarRoom;
+  user: User;
 }
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly barroomService: BarroomService,
+    private readonly userService: UserService,
   ) {}
 
   @IsPublic()
   @Post('signup')
-  createUser(@Body() createBarroomDto: CreateBarroomDto) {
-    return this.barroomService.createCompany(createBarroomDto);
+  createUser(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
   }
 
   @IsPublic()
-  @Get('/:existsEmail')
-  verfifyUsername(@Param('email') email: string) {
+  @Get('/email/:email')
+  verifyExistsEmail(@Param('email') email: string) {
     if (!!email) {
-      return this.barroomService.existBarroomByEmail(email);
+      return this.userService.findByEmail(email);
     }
   }
 

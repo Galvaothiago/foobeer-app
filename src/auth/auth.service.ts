@@ -5,38 +5,42 @@ import * as bcrypt from 'bcrypt';
 import { BarRoom } from 'src/entities/barroom/barroom.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UnauthorizedError } from './exceptions/unauthorized.exception';
+import { UserService } from 'src/services/user.service';
+import { User } from 'src/entities/user/user.entity';
+import { Role } from 'src/entities/user/roles-enum';
 
 interface PayloadProp {
   sub: string;
-  name: string;
-  cnpj: string;
+  username: string;
   email: string;
+  roles: Role[];
 }
 
 export interface LoginResponse {
   accessToken: string;
   id: string;
-  name: string;
-  cnpj: string;
+  username: string;
   email: string;
+  roles: Role[];
 }
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly barroomService: BarroomService,
+    private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUsernameAndPassword(email: string, password: string) {
-    const barroom = await this.barroomService.findBarroomByEmail(email);
+  async validateUsernameAndPassword(username: string, password: string) {
+    const user = await this.userService.findByUsernameAuth(username);
 
-    if (barroom) {
-      const isValidPassword = await bcrypt.compare(password, barroom.password);
+    console.log(user);
+    if (user) {
+      const isValidPassword = await bcrypt.compare(password, user.password);
 
       if (isValidPassword) {
         return {
-          ...barroom,
+          ...user,
           password: undefined,
         };
       }
@@ -45,22 +49,22 @@ export class AuthService {
     throw new UnauthorizedError();
   }
 
-  login(barroom: BarRoom): LoginResponse {
+  login(user: User): LoginResponse {
     const payload: PayloadProp = {
-      sub: barroom.id,
-      name: barroom.name,
-      cnpj: barroom.cnpj,
-      email: barroom.email,
+      sub: user.id,
+      username: user.username,
+      email: user.email,
+      roles: user.roles,
     };
 
     const jwt = this.jwtService.sign(payload);
 
     return {
-      id: barroom.id,
+      id: user.id,
       accessToken: jwt,
-      name: barroom.name,
-      cnpj: barroom.cnpj,
-      email: barroom.email,
+      username: user.username,
+      email: user.email,
+      roles: user.roles,
     };
   }
 }

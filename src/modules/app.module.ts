@@ -4,10 +4,12 @@ import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
+import { RolesGuard } from 'src/auth/guards/roles.guards';
 import { BarRoom } from 'src/entities/barroom/barroom.entity';
 import { OpeningHours } from 'src/entities/openinig-hours/opening-hours.entity';
 import { BarroomModule } from './barroom.module';
 import { OpeningHoursModule } from './opening-hours.module';
+import { UserModule } from './user.module';
 
 @Module({
   imports: [
@@ -21,13 +23,14 @@ import { OpeningHoursModule } from './opening-hours.module';
         username: configService.get('TYPE_ORM_DB_USERNAME', 'root'),
         password: configService.get('TYPE_ORM_DB_PASSWORD', '091041212'),
         database: configService.get('TYPE_ORM_DB_DATABASE', 'foobeer'),
-        // entities: [__dirname + './**/*.entity{.js, .ts}'],]
-        entities: [BarRoom, OpeningHours],
+        entities: [__dirname + '../../**/*.entity{.js, .ts}'],
+        // entities: [BarRoom, OpeningHours, ],
         synchronize: true,
       }),
     }),
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
+    UserModule,
     BarroomModule,
     OpeningHoursModule,
   ],
@@ -36,6 +39,11 @@ import { OpeningHoursModule } from './opening-hours.module';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })

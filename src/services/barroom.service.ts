@@ -20,23 +20,11 @@ export class BarroomService {
         createBarroomDto.email,
       );
 
-      const saltRounds = 10;
-
       if (barroomExists) {
         throw new BarRoomExistsException();
       }
 
-      const data = {
-        ...createBarroomDto,
-        password: await bcrypt.hash(createBarroomDto.password, saltRounds),
-      };
-
-      const userCreated = await this.barroomRepository.save(data);
-
-      return {
-        userCreated,
-        password: undefined,
-      };
+      return await this.barroomRepository.save(createBarroomDto);
     } catch (err) {
       throw new BarroomException(err.message);
     }
