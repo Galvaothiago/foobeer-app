@@ -9,6 +9,7 @@ import { UserExistsException } from 'src/exceptions/user/user-exists.exception';
 import { UserNotFoundException } from 'src/exceptions/user/user-not-found.exception';
 import { UserException } from 'src/exceptions/user/user.exception';
 import { yourPowersByYourRole } from 'src/utils/yourPowersByYourRole';
+import { UserResponse } from 'src/entities/user/dto/response-user.dto';
 
 @Injectable()
 export class UserService {
@@ -16,18 +17,6 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-
-  async usernameAlreadyExists(username: string) {
-    const userByUsername = await this.userRepository.findBy({ username });
-
-    const usernameAlreadyExists = userByUsername[0]?.username === username;
-
-    if (usernameAlreadyExists) {
-      return true;
-    }
-
-    return false;
-  }
 
   async create(createUserDto: CreateUserDto) {
     const userNameExists = await this.usernameAlreadyExists(
@@ -55,11 +44,22 @@ export class UserService {
     };
   }
 
+  async usernameAlreadyExists(username: string) {
+    const userByUsername = await this.userRepository.findBy({ username });
+
+    const usernameAlreadyExists = userByUsername[0]?.username === username;
+
+    if (usernameAlreadyExists) {
+      return true;
+    }
+
+    return false;
+  }
+
   async findByUsernameAuth(username: string) {
     try {
       const user = await this.userRepository.findOneBy({ username });
 
-      console.log(user.roles);
       if (!user) throw new UserNotFoundException();
 
       return user;
@@ -99,6 +99,46 @@ export class UserService {
       };
 
       return userEdited;
+    } catch (err) {
+      throw new UserException(err.message);
+    }
+  }
+
+  async findByCNPJ(cnpj: string) {
+    try {
+      const user = await this.userRepository.findBy({ barroomCNPJ: cnpj });
+
+      if (user.length === 0) throw new UserNotFoundException();
+
+      return user;
+    } catch (err) {
+      throw new UserException(err.message);
+    }
+  }
+
+  async getUserInformation(user: User): Promise<UserResponse> {
+    try {
+      const userInfo = await this.userRepository.findOneBy({ id: user.id });
+
+      const userEdited = {
+        ...userInfo,
+        yourPowers: yourPowersByYourRole(user.roles),
+        password: undefined,
+      };
+
+      return userEdited;
+    } catch (err) {
+      throw new UserException(err.message);
+    }
+  }
+
+  async getAllUser() {
+    try {
+      const users = await this.userRepository.find({
+        select: ['id', 'username', 'email', 'roles', 'barroomCNPJ'],
+      });
+
+      return users;
     } catch (err) {
       throw new UserException(err.message);
     }

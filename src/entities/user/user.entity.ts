@@ -14,6 +14,12 @@ export class User {
 
   yourPowers: string;
 
+  @Column()
+  avatarPath: string;
+
+  @Column({ name: 'barroom_cnpj' })
+  barroomCNPJ: string;
+
   @Column({ type: 'enum', enum: Role, default: Role.TABLE })
   roles: Role[];
 

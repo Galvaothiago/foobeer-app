@@ -13,6 +13,11 @@ export class BarroomController {
     this.barroomService.createCompany(createBarroomDto);
   }
 
+  @Get('/')
+  async getAllBarrooms() {
+    // return this.barroomService.getAllBarrooms();
+  }
+
   @Roles(Role.GOD)
   @Get('/')
   teste() {
