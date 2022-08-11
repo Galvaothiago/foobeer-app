@@ -11,6 +11,8 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
+  avatarPath: string;
+
   @IsNotEmpty()
   roles: Role[];
 
