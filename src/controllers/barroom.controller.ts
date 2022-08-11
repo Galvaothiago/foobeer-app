@@ -19,10 +19,4 @@ export class BarroomController {
   async getAllBarrooms() {
     return this.barroomService.findAllBarroom();
   }
-
-  @Roles(Role.GOD)
-  @Get('/')
-  teste() {
-    return 'teste';
-  }
 }
