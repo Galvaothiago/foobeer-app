@@ -79,4 +79,14 @@ export class BarroomService {
       throw new BarroomException(err.message);
     }
   }
+
+  async findAllBarroom() {
+    try {
+      const allBarroom = await this.barroomRepository.find();
+
+      return allBarroom;
+    } catch (err) {
+      throw new BarroomException(err.message);
+    }
+  }
 }

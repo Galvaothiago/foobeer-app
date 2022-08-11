@@ -8,14 +8,16 @@ import { BarroomService } from 'src/services/barroom.service';
 export class BarroomController {
   constructor(private readonly barroomService: BarroomService) {}
 
+  @Roles(Role.GOD, Role.ADMIN)
   @Post('/')
   async createBarroom(@Body() createBarroomDto: CreateBarroomDto) {
     this.barroomService.createCompany(createBarroomDto);
   }
 
+  @Roles(Role.GOD, Role.ADMIN)
   @Get('/')
   async getAllBarrooms() {
-    // return this.barroomService.getAllBarrooms();
+    return this.barroomService.findAllBarroom();
   }
 
   @Roles(Role.GOD)
