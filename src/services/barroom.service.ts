@@ -6,6 +6,7 @@ import { CreateBarroomDto } from 'src/entities/barroom/dto/create-barroom.dto';
 import { BarroomException } from 'src/exceptions/barroom/barrom.exception';
 import { BarRoomExistsException } from 'src/exceptions/barroom/barroom-exists.exception';
 import { Repository } from 'typeorm';
+import { UpdateBarroomDto } from 'src/entities/barroom/dto/update-barroom.dto';
 
 @Injectable()
 export class BarroomService {
@@ -25,6 +26,30 @@ export class BarroomService {
       }
 
       return await this.barroomRepository.save(createBarroomDto);
+    } catch (err) {
+      throw new BarroomException(err.message);
+    }
+  }
+
+  async updateBarroom(id: string, updateBarroomDto: UpdateBarroomDto) {
+    try {
+      const barroom = await this.barroomRepository.findOne({
+        where: {
+          id,
+        },
+      });
+
+      if (!barroom) {
+        throw new BarroomException('Not found');
+      }
+
+      await this.barroomRepository.update(id, updateBarroomDto);
+
+      return await this.barroomRepository.findOne({
+        where: {
+          id,
+        },
+      });
     } catch (err) {
       throw new BarroomException(err.message);
     }

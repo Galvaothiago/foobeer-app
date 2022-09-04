@@ -14,7 +14,7 @@ export class BarRoom {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ name: 'logo_path' })
   logoPath: string;
 
   @Column({ unique: true })
