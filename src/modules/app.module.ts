@@ -6,8 +6,9 @@ import { AuthModule } from 'src/auth/auth.module';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
 import { BarroomModule } from './barroom.module';
+import { CategoryModule } from './category.module';
 import { OpeningHoursModule } from './opening-hours.module';
-import { ProductsModule } from './products.module';
+import { ProductModule } from './product.module';
 import { UserModule } from './user.module';
 
 @Module({
@@ -30,7 +31,8 @@ import { UserModule } from './user.module';
     UserModule,
     BarroomModule,
     OpeningHoursModule,
-    ProductsModule,
+    ProductModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [

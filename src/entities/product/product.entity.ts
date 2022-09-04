@@ -1,11 +1,13 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Category } from '../category/category.entity';
 
-export class Products {
+@Entity('products')
+export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('varchar', { length: 100 })
-  category: string;
+  @ManyToOne(() => Category, (category) => category.name)
+  category: Category;
 
   @Column('varchar', { length: 255 })
   name: string;
@@ -14,7 +16,7 @@ export class Products {
   description: string;
 
   @Column({ unique: true })
-  SKU: string;
+  code: string;
 
   @Column({ default: true })
   available: boolean;
