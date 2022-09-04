@@ -14,7 +14,7 @@ export class User {
 
   yourPowers: string;
 
-  @Column()
+  @Column({ name: 'avatar_path' })
   avatarPath: string;
 
   @Column({ name: 'barroom_cnpj' })
