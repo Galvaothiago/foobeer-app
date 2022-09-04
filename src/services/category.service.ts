@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/entities/category/category.entity';
+import { CreateCategoryDto } from 'src/entities/category/dto/create-category.dto';
+import { UpdateCategoryDto } from 'src/entities/category/dto/update-barroom.dto';
+import { CategoryExistsException } from 'src/exceptions/category/category-exists.exception';
 import { CategoryNotFoundException } from 'src/exceptions/category/category-not-found.exception';
 import { CategoryException } from 'src/exceptions/category/category.exception';
 import { capitalize } from 'src/utils/format';
@@ -13,36 +16,34 @@ export class CategoryService {
     private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  async create(name: string, barroomId: string) {
-    name = capitalize(name);
+  async create(createCategoryDto: CreateCategoryDto) {
+    createCategoryDto.name = capitalize(createCategoryDto.name);
 
     try {
-      const categoryExists = await this.existsCategoryByName(name, barroomId);
+      const categoryExists = await this.existsCategoryByName(createCategoryDto);
 
       if (categoryExists) {
-        throw new CategoryException('Category already exists');
+        throw new CategoryExistsException();
       }
 
-      const category = await this.categoryRepository.save({
-        name,
-        barroomId,
-      });
+      const category = await this.categoryRepository.save(createCategoryDto);
 
       return category;
-    } catch (err) {
-      throw new CategoryException(err.message);
+    } catch (error) {
+      if (error instanceof CategoryExistsException) {
+        throw error;
+      }
+      throw new CategoryException(error.message);
     }
   }
 
   async existsCategoryByName(
-    name: string,
-    barroomId: string,
+    createCategoryDto: CreateCategoryDto,
   ): Promise<boolean> {
     try {
       const category = await this.categoryRepository.findOne({
         where: {
-          name,
-          barroomId,
+          ...createCategoryDto,
         },
       });
 
@@ -52,12 +53,15 @@ export class CategoryService {
     }
   }
 
-  async findCategoryByName(name: string, barroomId: string) {
+  async findCategoryByName(
+    name: string,
+    barroomCNPJ: string,
+  ): Promise<Category> {
     try {
       const category = await this.categoryRepository.findOne({
         where: {
           name,
-          barroomId,
+          barroomCNPJ,
         },
       });
 
@@ -66,6 +70,57 @@ export class CategoryService {
       }
 
       return category;
+    } catch (error) {
+      if (error instanceof CategoryNotFoundException) {
+        throw new CategoryNotFoundException(error.message);
+      }
+      throw new CategoryException(error.message);
+    }
+  }
+
+  async getAllCategoriesByBarroom(barroomCNPJ: string): Promise<Category[]> {
+    try {
+      const categories = await this.categoryRepository.find({
+        select: {
+          name: true,
+        },
+        where: {
+          barroomCNPJ,
+        },
+      });
+
+      return categories;
+    } catch (err) {
+      throw new CategoryException(err.message);
+    }
+  }
+
+  async deleteCategoryById(id: string, barroomCNPJ: string): Promise<void> {
+    try {
+      await this.categoryRepository.delete({
+        id,
+        barroomCNPJ,
+      });
+    } catch (err) {
+      throw new CategoryException(err.message);
+    }
+  }
+
+  async updateCategoryById(id: string, updateCategoryDto: UpdateCategoryDto) {
+    try {
+      const category = await this.categoryRepository.findOne({
+        where: {
+          id,
+        },
+      });
+
+      if (!category) {
+        throw new CategoryNotFoundException('Category not found');
+      }
+
+      await this.categoryRepository.update(id, {
+        ...updateCategoryDto,
+      });
     } catch (err) {
       throw new CategoryException(err.message);
     }

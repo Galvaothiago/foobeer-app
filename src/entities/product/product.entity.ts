@@ -12,7 +12,7 @@ export class Product {
   @Column('varchar', { length: 255 })
   name: string;
 
-  @Column('varchar', { length: 1000 })
+  @Column('varchar', { length: 1000, nullable: true })
   description: string;
 
   @Column({ unique: true })
@@ -24,6 +24,6 @@ export class Product {
   @Column({ type: 'float' })
   price: number;
 
-  @Column({ name: 'bar_room_id' })
-  barRoomId: string;
+  @Column({ name: 'bar_room_cnpj' })
+  barRoomCNPJ: string;
 }
