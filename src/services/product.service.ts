@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateCategoryDto } from 'src/entities/category/dto/create-category.dto';
 import { CreateProductDto } from 'src/entities/product/dto/create-product.dto';
 import { Product } from 'src/entities/product/product.entity';
 import { ProductExistsException } from 'src/exceptions/product/product-exists.exception';
@@ -30,7 +31,7 @@ export class ProductService {
 
       const category = await this.categoryService.findCategoryByName(
         createProductDto.category,
-        createProductDto.barRoomId,
+        createProductDto.barRoomCNPJ,
       );
 
       const productWithCategory = {
@@ -39,16 +40,20 @@ export class ProductService {
       };
 
       return await this.productsRepository.save(productWithCategory);
-    } catch (err) {
-      throw new ProductException(err.message);
+    } catch (error) {
+      if (error instanceof ProductExistsException) {
+        throw error;
+      }
+      throw new ProductException(error.message);
     }
   }
 
-  async findProductByName(name: string) {
+  async findProductByName(name: string, barRoomCNPJ: string) {
     try {
       const product = await this.productsRepository.findOne({
         where: {
           name,
+          barRoomCNPJ,
         },
       });
 
@@ -71,22 +76,25 @@ export class ProductService {
       }
 
       return product;
+    } catch (error) {
+      if (error instanceof ProductNotFoundException) {
+        throw error;
+      }
+      throw new ProductException(error.message);
+    }
+  }
+
+  async findProducstByCategory(category: CreateCategoryDto) {
+    try {
+      const products = await this.productsRepository.find({
+        where: {
+          category: category,
+        },
+      });
+
+      return products;
     } catch (err) {
       throw new ProductException(err.message);
     }
   }
-
-  //   async findProductByCategory(category: string) {
-  //     try {
-  //       const products = await this.productsRepository.find({
-  //         where: {
-  //           category,
-  //         },
-  //       });
-
-  //       return products;
-  //     } catch (err) {
-  //       throw new ProductException(err.message);
-  //     }
-  //   }
 }

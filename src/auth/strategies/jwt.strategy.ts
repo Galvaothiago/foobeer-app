@@ -7,6 +7,7 @@ interface UserFromJwt {
   id: string;
   username: string;
   email: string;
+  barroomCNPJ: string;
   roles: Role[];
 }
 
@@ -14,6 +15,7 @@ interface PayloadProp {
   sub: string;
   username: string;
   email: string;
+  barroomCNPJ: string;
   roles: Role[];
 }
 
@@ -32,6 +34,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       id: payload.sub,
       username: payload.username,
       email: payload.email,
+      barroomCNPJ: payload.barroomCNPJ,
       roles: payload.roles,
     };
   }

@@ -1,4 +1,6 @@
-export class ProductException extends Error {
+import { InternalServerErrorException } from '@nestjs/common';
+
+export class ProductException extends InternalServerErrorException {
   constructor(message: string) {
     super(message);
   }

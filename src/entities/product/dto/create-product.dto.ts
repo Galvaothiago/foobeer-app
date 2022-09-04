@@ -11,12 +11,12 @@ export class CreateProductDto {
   description: string;
 
   @IsNotEmpty()
-  SKU: string;
+  code: string;
 
   available: boolean;
 
   @IsNotEmpty()
   price: number;
 
-  barRoomId: string;
+  barRoomCNPJ: string;
 }

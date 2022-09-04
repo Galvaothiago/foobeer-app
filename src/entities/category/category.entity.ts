@@ -8,6 +8,6 @@ export class Category {
   @Column('varchar', { length: 100 })
   name: string;
 
-  @Column({ name: 'bar_room_id' })
-  barroomId: string;
+  @Column({ name: 'bar_room_cnpj' })
+  barroomCNPJ: string;
 }

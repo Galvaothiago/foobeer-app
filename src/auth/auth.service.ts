@@ -13,6 +13,7 @@ interface PayloadProp {
   sub: string;
   username: string;
   email: string;
+  barroomCNPJ: string;
   roles: Role[];
 }
 
@@ -53,6 +54,7 @@ export class AuthService {
       sub: user.id,
       username: user.username,
       email: user.email,
+      barroomCNPJ: user.barroomCNPJ,
       roles: user.roles,
     };
 
