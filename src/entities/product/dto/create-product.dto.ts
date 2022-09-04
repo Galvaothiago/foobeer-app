@@ -10,9 +10,6 @@ export class CreateProductDto {
   @IsOptional()
   description?: string;
 
-  @IsNotEmpty()
-  code: string;
-
   @IsOptional()
   available: boolean;
 

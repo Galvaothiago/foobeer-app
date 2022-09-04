@@ -34,12 +34,17 @@ export class ProductService {
         createProductDto.barRoomCNPJ,
       );
 
-      const productWithCategory = {
+      const productToSave = {
         ...createProductDto,
         category,
+        code: await this.createCodeToProduct(
+          createProductDto.name,
+          category.name,
+          createProductDto.barRoomCNPJ,
+        ),
       };
 
-      return await this.productsRepository.save(productWithCategory);
+      return await this.productsRepository.save(productToSave);
     } catch (error) {
       if (error instanceof ProductExistsException) {
         throw error;
@@ -63,11 +68,12 @@ export class ProductService {
     }
   }
 
-  async findProductByCode(code: string) {
+  async findProductByCode(code: string, barRoomCNPJ: string) {
     try {
       const product = await this.productsRepository.findOne({
         where: {
           code,
+          barRoomCNPJ,
         },
       });
 
@@ -84,6 +90,21 @@ export class ProductService {
     }
   }
 
+  async existsProductByCode(code: string, barRoomCNPJ: string) {
+    try {
+      const product = await this.productsRepository.findOne({
+        where: {
+          code,
+          barRoomCNPJ,
+        },
+      });
+
+      return !!product;
+    } catch (err) {
+      throw new ProductException(err.message);
+    }
+  }
+
   async findProducstByCategory(category: CreateCategoryDto) {
     try {
       const products = await this.productsRepository.find({
@@ -96,5 +117,24 @@ export class ProductService {
     } catch (err) {
       throw new ProductException(err.message);
     }
+  }
+
+  async createCodeToProduct(name: string, category: string, barroomId: string) {
+    const letters = `${category.substring(0, 1)}${name.substring(
+      0,
+      1,
+    )}`.toUpperCase();
+    const numbers = Math.floor(Math.random() * 100);
+
+    const code = `${letters}${numbers < 10 ? `0${numbers}` : numbers}`;
+
+    const codeAlreadyExists = await this.existsProductByCode(code, barroomId);
+
+    if (codeAlreadyExists) {
+      this.createCodeToProduct(name, category, barroomId);
+      return;
+    }
+
+    return code;
   }
 }
