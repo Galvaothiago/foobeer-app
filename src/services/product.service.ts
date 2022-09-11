@@ -119,7 +119,11 @@ export class ProductService {
     }
   }
 
-  async createCodeToProduct(name: string, category: string, barroomId: string) {
+  async createCodeToProduct(
+    name: string,
+    category: string,
+    barroomCNPJ: string,
+  ) {
     const letters = `${category.substring(0, 1)}${name.substring(
       0,
       1,
@@ -128,10 +132,10 @@ export class ProductService {
 
     const code = `${letters}${numbers < 10 ? `0${numbers}` : numbers}`;
 
-    const codeAlreadyExists = await this.existsProductByCode(code, barroomId);
+    const codeAlreadyExists = await this.existsProductByCode(code, barroomCNPJ);
 
     if (codeAlreadyExists) {
-      this.createCodeToProduct(name, category, barroomId);
+      this.createCodeToProduct(name, category, barroomCNPJ);
       return;
     }
 
