@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/entities/category/category.entity';
 import { CreateCategoryDto } from 'src/entities/category/dto/create-category.dto';
-import { UpdateCategoryDto } from 'src/entities/category/dto/update-barroom.dto';
+import { UpdateCategoryDto } from 'src/entities/category/dto/update-category.dto';
 import { CategoryExistsException } from 'src/exceptions/category/category-exists.exception';
 import { CategoryNotFoundException } from 'src/exceptions/category/category-not-found.exception';
 import { CategoryException } from 'src/exceptions/category/category.exception';

@@ -1,12 +1,13 @@
+import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
 import { AllExceptionsFilter } from 'src/exceptions/all-exceptions.filter';
-import { HttpExceptionFilter } from 'src/exceptions/http-exception.filter';
+import { OrderQueueModule } from 'src/order-queue/order-queue.module';
 import { BarroomModule } from './barroom.module';
 import { CategoryModule } from './category.module';
 import { OpeningHoursModule } from './opening-hours.module';
@@ -17,7 +18,7 @@ import { UserModule } from './user.module';
   imports: [
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
-        type: 'mysql',
+        type: process.env.TYPE_ORM_DB as any,
         host: process.env.TYPE_ORM_DB_HOST,
         port: Number(process.env.TYPE_ORM_DB_PORT),
         username: process.env.TYPE_ORM_DB_USERNAME,
@@ -27,8 +28,8 @@ import { UserModule } from './user.module';
         synchronize: true,
       }),
     }),
-
     ConfigModule.forRoot({ isGlobal: true }),
+    OrderQueueModule,
     AuthModule,
     UserModule,
     BarroomModule,

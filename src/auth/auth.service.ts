@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { BarroomService } from 'src/services/barroom.service';
+import { BarroomService } from 'src/services/bar-room.service';
 
 import * as bcrypt from 'bcrypt';
-import { BarRoom } from 'src/entities/barroom/barroom.entity';
+import { BarRoom } from 'src/entities/bar-room/bar-room.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UnauthorizedError } from './exceptions/unauthorized.exception';
 import { UserService } from 'src/services/user.service';

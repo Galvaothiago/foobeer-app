@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Roles } from 'src/decorators/user-roles.decorator';
-import { CreateBarroomDto } from 'src/entities/barroom/dto/create-barroom.dto';
-import { UpdateBarroomDto } from 'src/entities/barroom/dto/update-barroom.dto';
+import { CreateBarroomDto } from 'src/entities/bar-room/dto/create-bar-room.dto';
+import { UpdateBarroomDto } from 'src/entities/bar-room/dto/update-bar-room.dto';
 import { Role } from 'src/entities/user/roles-enum';
-import { BarroomService } from 'src/services/barroom.service';
+import { BarroomService } from 'src/services/bar-room.service';
 
 @Controller('barroom')
 export class BarroomController {
