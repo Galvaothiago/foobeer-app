@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { StatusTable } from './status.enum';
 
 @Entity('bar_table')
 export class BarTable {
@@ -11,8 +12,8 @@ export class BarTable {
   @Column({ name: 'barroom_cnpj' })
   barroomCNPJ: string;
 
-  @Column()
-  status: string;
+  @Column({ type: 'enum', enum: StatusTable, default: StatusTable.CLOSED })
+  status: StatusTable;
 
   @Column({ name: 'open_at' })
   openAt: Date;

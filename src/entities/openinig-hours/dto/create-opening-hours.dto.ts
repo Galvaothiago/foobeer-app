@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { BarRoom } from 'src/entities/barroom/barroom.entity';
+import { BarRoom } from 'src/entities/bar-room/bar-room.entity';
 
 export class CreateOpeningHoursDto {
   @IsNotEmpty()

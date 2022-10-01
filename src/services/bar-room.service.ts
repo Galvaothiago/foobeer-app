@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BarRoom } from 'src/entities/barroom/barroom.entity';
-import { CreateBarroomDto } from 'src/entities/barroom/dto/create-barroom.dto';
-import { BarroomException } from 'src/exceptions/barroom/barrom.exception';
-import { BarRoomExistsException } from 'src/exceptions/barroom/barroom-exists.exception';
+import { BarRoom } from 'src/entities/bar-room/bar-room.entity';
+import { CreateBarroomDto } from 'src/entities/bar-room/dto/create-bar-room.dto';
+import { UpdateBarroomDto } from 'src/entities/bar-room/dto/update-bar-room.dto';
+import { BarRoomExistsException } from 'src/exceptions/bar-room/bar-room-exists.exception';
+import { BarroomException } from 'src/exceptions/bar-room/bar-room.exception';
 import { Repository } from 'typeorm';
-import { UpdateBarroomDto } from 'src/entities/barroom/dto/update-barroom.dto';
 
 @Injectable()
 export class BarroomService {

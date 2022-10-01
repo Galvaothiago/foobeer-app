@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
 import { AllExceptionsFilter } from 'src/exceptions/all-exceptions.filter';
-import { HttpExceptionFilter } from 'src/exceptions/http-exception.filter';
 import { BarroomModule } from './barroom.module';
 import { CategoryModule } from './category.module';
 import { OpeningHoursModule } from './opening-hours.module';
