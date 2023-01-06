@@ -11,6 +11,7 @@ import { OrderQueueModule } from 'src/order-queue/order-queue.module';
 import { BarroomModule } from './barroom.module';
 import { CategoryModule } from './category.module';
 import { OpeningHoursModule } from './opening-hours.module';
+import { OrderModule } from './order.module';
 import { ProductModule } from './product.module';
 import { UserModule } from './user.module';
 
@@ -36,6 +37,7 @@ import { UserModule } from './user.module';
     OpeningHoursModule,
     ProductModule,
     CategoryModule,
+    OrderModule,
   ],
   controllers: [],
   providers: [

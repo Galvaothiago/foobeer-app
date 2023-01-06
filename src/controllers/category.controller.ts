@@ -20,7 +20,7 @@ export class CategoryController {
       ...createCategoryDto,
       barroomCNPJ: user.barroomCNPJ,
     };
-    console.log(user);
+
     return await this.categoryService.create(createCategoryDto);
   }
 
